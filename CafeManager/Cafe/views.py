@@ -18,4 +18,13 @@ class EquipmentViewSet(viewsets.ModelViewSet):
     serializer_class = EquipmentSerializer
     permission_classes = [permissions.AllowAny]
 
+def home(request):
+    products = Product.objects.all()
+    equipments = Equipment.objects.all()
+    data = {
+        'products': products,
+        'equipments': equipments
+    }
+    return render(request, "home.html", data)
+
 

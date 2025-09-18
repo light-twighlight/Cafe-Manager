@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h3>Products</h3>
+    <ul>
+        {% for product in products %}
+            <li>{{product.name}} - {{product.description}}</li>
+        {% empty %}
+        <li>No Products Available</li>
+        {% endfor %}
+    </ul>
+    <h3>Equipments</h3>
+    <ul>
+        {% for product in equipments %}
+            <li>{{product.name}} - {{product.description}}</li>
+        {% empty %}
+            <li>No Products Available</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,7 +1,7 @@
 .vscode/
 .idea/
 CafeManager/CafeManager/settings.py
-CafeManager\CafeManager\settings.py.example
+CafeManager/CafeManager/settings.py.example
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
