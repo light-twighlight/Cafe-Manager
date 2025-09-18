@@ -1,3 +1,21 @@
 from django.shortcuts import render
+from rest_framework import viewsets, permissions
+from .models import State, Product, Equipment
+from .serializers import StateSerializer, ProductSerializer, EquipmentSerializer
 
-# Create your views here.
+class StateViewSet(viewsets.ModelViewSet):
+    queryset = State.objects.all()
+    serializer_class = StateSerializer
+    permission_classes = [permissions.AllowAny]
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.AllowAny]
+
+class EquipmentViewSet(viewsets.ModelViewSet):
+    queryset = Equipment.objects.all()
+    serializer_class = EquipmentSerializer
+    permission_classes = [permissions.AllowAny]
+
+
