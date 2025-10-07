@@ -1,0 +1,40 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ action }}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3">
+</head>
+<body>
+  <header class="site-header"><div class="container header-inner"><h1 class="logo">Cafe Manager</h1></div></header>
+  <main class="container auth-container">
+    <section class="panel">
+      <h2 class="panel-title">{{ action }}</h2>
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-field">
+          {{ form.name.label_tag }}
+          {{ form.name }}
+        </div>
+        <div class="form-field">
+          {{ form.description.label_tag }}
+          {{ form.description }}
+        </div>
+        <div class="form-field">
+          {{ form.quantity.label_tag }}
+          {{ form.quantity }}
+        </div>
+        <div class="form-field">
+          {{ form.expiration_date.label_tag }}
+          {{ form.expiration_date }}
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

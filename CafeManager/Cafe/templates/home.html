@@ -30,6 +30,11 @@
         <section class="panel products">
             <h2 class="panel-title">Products</h2>
             <div class="separator"></div>
+            {% if request.user.is_authenticated %}
+            <div style="margin-bottom:10px;">
+                <a class="btn" href="/cafe/product/create/">Add Product</a>
+            </div>
+            {% endif %}
             <div class="cards">
                 {% for product in products %}
                 <article class="card">
@@ -41,6 +46,12 @@
                             <span>Quantity: {{ product.quantity }}</span>
                             <span>Expires: {{ product.expiration_date|date:"Y-m-d" }}</span>
                         </div>
+                        {% if request.user.is_authenticated %}
+                        <div style="margin-top:10px; display:flex; gap:8px;">
+                            <a class="btn" href="/cafe/product/{{ product.pk }}/edit/">Edit</a>
+                            <a class="btn btn-outline" href="/cafe/product/{{ product.pk }}/delete/">Delete</a>
+                        </div>
+                        {% endif %}
                     </div>
                 </article>
                 {% empty %}
@@ -52,6 +63,11 @@
         <section class="panel equipments">
             <h2 class="panel-title">Equipment</h2>
             <div class="separator"></div>
+            {% if request.user.is_authenticated %}
+            <div style="margin-bottom:10px;">
+                <a class="btn" href="/cafe/equipment/create/">Add Equipment</a>
+            </div>
+            {% endif %}
             <div class="cards">
                 {% for equip in equipments %}
                 <article class="card">
@@ -63,6 +79,12 @@
                             <span>State: {{ equip.state.name }}</span>
                             <span>Date: {{ equip.date|date:"Y-m-d" }}</span>
                         </div>
+                        {% if request.user.is_authenticated %}
+                        <div style="margin-top:10px; display:flex; gap:8px;">
+                            <a class="btn" href="/cafe/equipment/{{ equip.pk }}/edit/">Edit</a>
+                            <a class="btn btn-outline" href="/cafe/equipment/{{ equip.pk }}/delete/">Delete</a>
+                        </div>
+                        {% endif %}
                     </div>
                 </article>
                 {% empty %}

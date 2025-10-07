@@ -16,4 +16,12 @@ urlpatterns = [
     path('login/', views.login_page, name='login'),
     path('register/', views.register_page, name='register'),
     path('logout/', views.logout_view, name='logout'),
+    # product CRUD
+    path('product/create/', views.product_create, name='product-create'),
+    path('product/<int:pk>/edit/', views.product_edit, name='product-edit'),
+    path('product/<int:pk>/delete/', views.product_delete, name='product-delete'),
+    # equipment CRUD
+    path('equipment/create/', views.equipment_create, name='equipment-create'),
+    path('equipment/<int:pk>/edit/', views.equipment_edit, name='equipment-edit'),
+    path('equipment/<int:pk>/delete/', views.equipment_delete, name='equipment-delete'),
 ]

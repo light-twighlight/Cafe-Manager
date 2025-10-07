@@ -9,6 +9,9 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django import forms
+# models already imported above
 
 
 
@@ -100,12 +103,122 @@ def logout_view(request):
     logout(request)
     return redirect('home')
 
-class RegisterView(generics.CreateAPIView):
-    User = get_user_model()
-    queryset = User.objects.all()
-    serializer_class = RegisterSerializer
-    permission_classes = [permissions.AllowAny]
 
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'quantity', 'expiration_date']
+        widgets = {
+            'expiration_date': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        }
+
+
+class EquipmentForm(forms.ModelForm):
+    class Meta:
+        model = Equipment
+        fields = ['name', 'description', 'state', 'date']
+        widgets = {
+            'date': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        }
+
+
+@login_required
+def product_create(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            prod = form.save(commit=False)
+            prod.owner = request.user
+            prod.last_modified_by = request.user
+            prod.save()
+            return redirect('home')
+    else:
+        form = ProductForm()
+    return render(request, 'product_form.html', {'form': form, 'action': 'Create Product'})
+
+
+@login_required
+def product_edit(request, pk):
+    prod = Product.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=prod)
+        if form.is_valid():
+            p = form.save(commit=False)
+            p.last_modified_by = request.user
+            p.save()
+            return redirect('home')
+    else:
+        # Format the existing expiration_date to match datetime-local input
+        if prod.expiration_date:
+            try:
+                initial = {'expiration_date': prod.expiration_date.strftime('%Y-%m-%dT%H:%M')}
+            except Exception:
+                initial = {}
+            form = ProductForm(instance=prod, initial=initial)
+        else:
+            form = ProductForm(instance=prod)
+    return render(request, 'product_form.html', {'form': form, 'action': 'Edit Product'})
+
+
+@login_required
+def product_delete(request, pk):
+    prod = Product.objects.get(pk=pk)
+    if request.method == 'POST':
+        prod.delete()
+        return redirect('home')
+    return render(request, 'confirm_delete.html', {'obj': prod, 'type': 'Product'})
+
+
+@login_required
+def equipment_create(request):
+    if request.method == 'POST':
+        form = EquipmentForm(request.POST)
+        if form.is_valid():
+            eq = form.save(commit=False)
+            eq.owner = request.user
+            eq.last_modified_by = request.user
+            eq.save()
+            return redirect('home')
+    else:
+        form = EquipmentForm()
+    return render(request, 'equipment_form.html', {'form': form, 'action': 'Create Equipment'})
+
+
+@login_required
+def equipment_edit(request, pk):
+    eq = Equipment.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = EquipmentForm(request.POST, instance=eq)
+        if form.is_valid():
+            e = form.save(commit=False)
+            e.last_modified_by = request.user
+            e.save()
+            return redirect('home')
+    else:
+        form = EquipmentForm(instance=eq)
+    return render(request, 'equipment_form.html', {'form': form, 'action': 'Edit Equipment'})
+
+
+@login_required
+def equipment_delete(request, pk):
+    eq = Equipment.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = EquipmentForm(request.POST, instance=eq)
+        if form.is_valid():
+            e = form.save(commit=False)
+            e.last_modified_by = request.user
+            e.save()
+            return redirect('home')
+    else:
+        # Format existing date to match datetime-local input
+        if eq.date:
+            try:
+                initial = {'date': eq.date.strftime('%Y-%m-%dT%H:%M')}
+            except Exception:
+                initial = {}
+            form = EquipmentForm(instance=eq, initial=initial)
+        else:
+            form = EquipmentForm(instance=eq)
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
 
@@ -120,5 +233,12 @@ class LoginView(APIView):
             return Response({'token': token.key, 'user_id': user.pk, 'username': user.username})
         else:
             return Response({'error': 'Nieprawidłowe dane logowania'}, status=400)
+
+
+class RegisterView(generics.CreateAPIView):
+    User = get_user_model()
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [permissions.AllowAny]
 
 

@@ -1,1 +1,2 @@
 - add photos to db
+- clear design

@@ -62,6 +62,7 @@ li {
     border-radius: 12px;
     box-shadow: 0 6px 18px rgba(50,48,49,0.06);
 }
+.panel .btn { margin-right: 6px; }
 .panel-title {
     margin: 0 0 8px 0;
     font-size: 18px;
@@ -78,15 +79,16 @@ li {
 .cards {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap; /* keep in a single horizontal strip */
+    flex-wrap: wrap; /* wrap items to new rows when reach edge */
     gap: 14px;
-    overflow-x: auto; /* allow scrolling when narrow */
     padding-bottom: 8px;
 }
 .card {
     display: flex;
     flex-direction: column;
-    flex: 0 0 220px; /* fixed rectangle width */
+    /* three columns on wide screens, wrap when needed */
+    flex: 0 1 calc(20% - 14px);
+    max-width: calc(20% - 14px);
     background: #ffffff;
     border-radius: 8px;
     overflow: hidden;
@@ -181,6 +183,11 @@ li {
 /* Responsive */
 @media (max-width: 900px) {
     .main-grid { grid-template-columns: 1fr; }
-    .card { flex: 0 0 48%; }
+    .card { flex: 0 1 48%; max-width: 48%; }
     .main-grid > .panel + .panel { border-left: none; padding-left: 0; }
 }
+
+@media (max-width: 520px) {
+    .card { flex: 0 1 100%; max-width: 100%; }
+}
+.card .btn { padding:6px 10px; font-size:13px; }
