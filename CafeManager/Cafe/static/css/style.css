@@ -96,7 +96,7 @@ li {
     box-shadow: 0 4px 12px rgba(30,34,40,0.04);
 }
 .card-media {
-    background: #eef6ff;
+    background: #ffffff;
     height: 130px;
     display: flex;
     align-items: center;
@@ -126,10 +126,13 @@ li {
 
 /* Footer */
 .site-footer {
-    margin-top: 30px;
-    padding: 18px 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
     background: #ffffff;
     border-top: 1px solid #ecedef;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 300;
 }
 .footer-inner {
     text-align: center;

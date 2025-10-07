@@ -5,3 +5,6 @@ add to settings:
 # Media files (uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'Cafe' / 'static' / 'media'
+
+- change footer font
+- all forms do not apply design from css
