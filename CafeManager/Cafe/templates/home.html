@@ -38,7 +38,13 @@
             <div class="cards">
                 {% for product in products %}
                 <article class="card">
-                    <div class="card-media">Photo</div>
+                    <div class="card-media">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:100%; height:100%; object-fit:cover;" />
+                        {% else %}
+                            Photo
+                        {% endif %}
+                    </div>
                     <div class="card-body">
                         <h3 class="card-title">{{ product.name }}</h3>
                         <p class="card-desc">{{ product.description }}</p>
@@ -71,7 +77,13 @@
             <div class="cards">
                 {% for equip in equipments %}
                 <article class="card">
-                    <div class="card-media">Photo</div>
+                    <div class="card-media">
+                        {% if equip.image %}
+                            <img src="{{ equip.image.url }}" alt="{{ equip.name }}" style="width:100%; height:100%; object-fit:cover;" />
+                        {% else %}
+                            Photo
+                        {% endif %}
+                    </div>
                     <div class="card-body">
                         <h3 class="card-title">{{ equip.name }}</h3>
                         <p class="card-desc">{{ equip.description }}</p>

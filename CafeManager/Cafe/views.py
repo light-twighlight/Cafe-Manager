@@ -11,8 +11,6 @@ from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django import forms
-# models already imported above
-
 
 
 class StateViewSet(viewsets.ModelViewSet):
@@ -107,7 +105,7 @@ def logout_view(request):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'quantity', 'expiration_date']
+        fields = ['name', 'description', 'quantity', 'expiration_date', 'image']
         widgets = {
             'expiration_date': forms.DateTimeInput(attrs={'type': 'datetime-local'})
         }
@@ -116,7 +114,7 @@ class ProductForm(forms.ModelForm):
 class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
-        fields = ['name', 'description', 'state', 'date']
+        fields = ['name', 'description', 'state', 'date', 'image']
         widgets = {
             'date': forms.DateTimeInput(attrs={'type': 'datetime-local'})
         }
@@ -125,7 +123,7 @@ class EquipmentForm(forms.ModelForm):
 @login_required
 def product_create(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             prod = form.save(commit=False)
             prod.owner = request.user
@@ -141,7 +139,7 @@ def product_create(request):
 def product_edit(request, pk):
     prod = Product.objects.get(pk=pk)
     if request.method == 'POST':
-        form = ProductForm(request.POST, instance=prod)
+        form = ProductForm(request.POST, request.FILES, instance=prod)
         if form.is_valid():
             p = form.save(commit=False)
             p.last_modified_by = request.user
@@ -172,7 +170,7 @@ def product_delete(request, pk):
 @login_required
 def equipment_create(request):
     if request.method == 'POST':
-        form = EquipmentForm(request.POST)
+        form = EquipmentForm(request.POST, request.FILES)
         if form.is_valid():
             eq = form.save(commit=False)
             eq.owner = request.user
@@ -188,7 +186,7 @@ def equipment_create(request):
 def equipment_edit(request, pk):
     eq = Equipment.objects.get(pk=pk)
     if request.method == 'POST':
-        form = EquipmentForm(request.POST, instance=eq)
+        form = EquipmentForm(request.POST, request.FILES, instance=eq)
         if form.is_valid():
             e = form.save(commit=False)
             e.last_modified_by = request.user

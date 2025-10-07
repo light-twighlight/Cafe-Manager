@@ -12,7 +12,7 @@
   <main class="container auth-container">
     <section class="panel">
       <h2 class="panel-title">{{ action }}</h2>
-      <form method="post">
+      <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-field">
           {{ form.name.label_tag }}
@@ -29,6 +29,13 @@
         <div class="form-field">
           {{ form.date.label_tag }}
           {{ form.date }}
+        </div>
+        <div class="form-field">
+          {{ form.image.label_tag }}
+          {{ form.image }}
+          {% if form.instance.image %}
+            <div style="margin-top:8px;"><img src="{{ form.instance.image.url }}" alt="preview" style="max-width:160px; border-radius:6px;"/></div>
+          {% endif %}
         </div>
         <div class="form-actions">
           <button class="btn btn-primary" type="submit">Save</button>
