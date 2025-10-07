@@ -15,8 +15,13 @@
         <div class="container header-inner">
             <h1 class="logo">Cafe Manager</h1>
             <nav class="header-actions">
-                <a class="btn" href="/cafe/api/auth/login/">Login</a>
-                <a class="btn btn-outline" href="/cafe/api/auth/register/">Register</a>
+                {% if request.user.is_authenticated %}
+                    <span class="greeting">Hello, {{ request.user.username }}!</span>
+                    <a class="btn btn-outline" href="/cafe/logout/">Logout</a>
+                {% else %}
+                    <a class="btn" href="/cafe/login/">Login</a>
+                    <a class="btn btn-outline" href="/cafe/register/">Register</a>
+                {% endif %}
             </nav>
         </div>
     </header>

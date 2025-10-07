@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from .models import State, Product, Equipment
-from .serializers import StateSerializer, ProductSerializer, EquipmentSerializer, RegisterSerializer, UserSerializer
+from .serializers import StateSerializer, ProductSerializer, EquipmentSerializer, RegisterSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import viewsets, generics, permissions
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
+from django.contrib.auth import logout
 
 
 
@@ -62,6 +64,41 @@ def home(request):
         'equipments': equipments
     }
     return render(request, "home.html", data)
+
+
+def login_page(request):
+    error = None
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect('home')
+        else:
+            error = 'Invalid credentials'
+    return render(request, 'login.html', {'error': error})
+
+
+def register_page(request):
+    error = None
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        User = get_user_model()
+        if User.objects.filter(username=username).exists():
+            error = 'Username already exists'
+        else:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            login(request, user)
+            return redirect('home')
+    return render(request, 'register.html', {'error': error})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 class RegisterView(generics.CreateAPIView):
     User = get_user_model()

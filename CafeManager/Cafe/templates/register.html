@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Register - Cafe Manager</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo"><a href="/cafe/">Cafe Manager</a></h1>
+      <nav class="header-actions">
+        <a class="btn btn-outline" href="/cafe/login/">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container auth-container">
+    <section class="panel">
+      <h2 class="panel-title">Register</h2>
+      <form method="post" class="auth-form">
+        {% csrf_token %}
+        {% if error %}
+          <div class="form-error">{{ error }}</div>
+        {% endif %}
+        <div class="form-field">
+          <label for="id_username">Username</label>
+          <input id="id_username" name="username" type="text" required />
+        </div>
+        <div class="form-field">
+          <label for="id_email">Email</label>
+          <input id="id_email" name="email" type="email" required />
+        </div>
+        <div class="form-field">
+          <label for="id_password">Password</label>
+          <input id="id_password" name="password" type="password" required />
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Register</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">Project made by Liudmyla Savluk — 2025</div>
+  </footer>
+</body>
+</html>
