@@ -3,28 +3,74 @@
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cafe Manager</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h3>Products</h3>
-    <ul>
-        {% for product in products %}
-            <li>{{product.name}} - {{product.description}}</li>
-        {% empty %}
-        <li>No Products Available</li>
-        {% endfor %}
-    </ul>
-    <h3>Equipments</h3>
-    <ul>
-        {% for product in equipments %}
-            <li>{{product.name}} - {{product.description}}</li>
-        {% empty %}
-            <li>No Products Available</li>
-        {% endfor %}
-    </ul>
+    <header class="site-header">
+        <div class="container header-inner">
+            <h1 class="logo">Cafe Manager</h1>
+            <nav class="header-actions">
+                <a class="btn" href="/cafe/api/auth/login/">Login</a>
+                <a class="btn btn-outline" href="/cafe/api/auth/register/">Register</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-grid">
+        <section class="panel products">
+            <h2 class="panel-title">Products</h2>
+            <div class="separator"></div>
+            <div class="cards">
+                {% for product in products %}
+                <article class="card">
+                    <div class="card-media">Photo</div>
+                    <div class="card-body">
+                        <h3 class="card-title">{{ product.name }}</h3>
+                        <p class="card-desc">{{ product.description }}</p>
+                        <div class="card-meta">
+                            <span>Quantity: {{ product.quantity }}</span>
+                            <span>Expires: {{ product.expiration_date|date:"Y-m-d" }}</span>
+                        </div>
+                    </div>
+                </article>
+                {% empty %}
+                <p>No Products Available</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="panel equipments">
+            <h2 class="panel-title">Equipment</h2>
+            <div class="separator"></div>
+            <div class="cards">
+                {% for equip in equipments %}
+                <article class="card">
+                    <div class="card-media">Photo</div>
+                    <div class="card-body">
+                        <h3 class="card-title">{{ equip.name }}</h3>
+                        <p class="card-desc">{{ equip.description }}</p>
+                        <div class="card-meta">
+                            <span>State: {{ equip.state.name }}</span>
+                            <span>Date: {{ equip.date|date:"Y-m-d" }}</span>
+                        </div>
+                    </div>
+                </article>
+                {% empty %}
+                <p>No Equipment Available</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>Project made by Liudmyla Savluk — 2025</p>
+        </div>
+    </footer>
 </body>
 </html>
